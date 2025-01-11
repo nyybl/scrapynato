@@ -17,3 +17,7 @@ func MangaRouter() *chi.Mux {
 func GetIndex(w http.ResponseWriter, r *http.Request) lib.ResponseSchema {
 	return lib.NewResponse(http.StatusOK, "/")
 }
+
+func GetMangaByID(w http.ResponseWriter, r *http.Request) lib.ResponseSchema {
+	return lib.NewResponse(1, "")
+}
