@@ -53,7 +53,6 @@ func ScrapeLatest() (mangas []LatestManga, err error) {
 			})
 		}
 	})
-
 	if err = c.Visit(endpoint("/")); err != nil {
 		return nil, err
 	}
@@ -100,10 +99,9 @@ func SearchManga(query string) (results []SearchResult, err error) {
 	c, errCh := createCollector()
 
 	c.OnHTML(SearchResultSelector, func(e *colly.HTMLElement) {
-		e.ForEach("div.search-story-item", func(_ int, h *colly.HTMLElement) {
-			link, _ := h.DOM.Find("a.item-img").Attr("href")
-			title, _ := h.DOM.Find("a.item-img").Attr("title")
-			imgSrc, _ := h.DOM.Find("a.item-img img.img-loading").Attr("src")
+		link, _ := e.DOM.Find("a.item-img").Attr("href")
+			title, _ := e.DOM.Find("a.item-img").Attr("title")
+			imgSrc, _ := e.DOM.Find("a.item-img img.img-loading").Attr("src")
 
 			if link != "" {
 				results = append(results, SearchResult{
@@ -112,10 +110,7 @@ func SearchManga(query string) (results []SearchResult, err error) {
 					Thumbnail: imgSrc,
 				})
 			}
-		})
 	})
-
-	
 	c.Visit(endpoint("/search/story/" + query))
 
 	select {
